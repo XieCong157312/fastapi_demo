@@ -17,12 +17,21 @@ def base_generator(engine_url):
     engine = create_engine(
         engine_url, connect_args=connect_args
     )
-    session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
     base = declarative_base()
     base.metadata.create_all(bind=engine)
-    return base
+    return base, session
 
 
-Sqlite_Base = base_generator(DBConfig.get("sqlite"))
-MySQL_Base = base_generator(DBConfig.get("mysql"))
+Sqlite_Base, Sq_session = base_generator(DBConfig.get("sqlite"))
+MySQL_Base, MS_session = base_generator(DBConfig.get("mysql"))
+
+
+def get_db():
+    db = Sq_session()
+    try:
+        yield db
+    finally:
+        db.close()
+

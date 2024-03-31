@@ -1,11 +1,11 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Session
 
-from app.DB import Sqlite_Base,MySQL_Base
+from app.DB import Sqlite_Base, MySQL_Base
 
 
 class User(Sqlite_Base):
-    __tablename__ = "users"
+    __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
     email = Column(String, unique=True, index=True)
@@ -16,7 +16,7 @@ class User(Sqlite_Base):
 
 
 class Item(MySQL_Base):
-    __tablename__ = "items"
+    __tablename__ = "item"
 
     id = Column(Integer, primary_key=True)
     title = Column(String, index=True)
